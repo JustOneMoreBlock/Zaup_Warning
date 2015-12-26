@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Zaup_WarningConfiguration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <DatabaseAddress>localhost</DatabaseAddress>
+  <DatabaseName>unturned</DatabaseName>
+  <DatabaseUsername>unturned</DatabaseUsername>
+  <DatabasePassword>password</DatabasePassword>
+  <DatabasePort>3306</DatabasePort>
+  <TableName>warnings</TableName>
+  <KeepWarningsLength>2592000</KeepWarningsLength>
+  <WarningtoKickOn>true</WarningtoKickOn>
+  <WarningstoKick>3</WarningstoKick>
+</Zaup_WarningConfiguration>
