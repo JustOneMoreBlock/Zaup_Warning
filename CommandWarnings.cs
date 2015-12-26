@@ -10,11 +10,11 @@ namespace Zaup_Warning
 {
     class CommandWarnings : IRocketCommand
     {
-        public bool RunFromConsole
+        public AllowedCaller AllowedCaller
         {
             get
             {
-                return false;
+                return AllowedCaller.Both;
             }
         }
         public string Name
