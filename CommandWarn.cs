@@ -1,22 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
+using Rocket.Core;
+using Rocket.Core.Permissions;
 using Rocket.Unturned;
-using Rocket.Unturned.Commands;
+using Rocket.Unturned.Events;
+using Rocket.Unturned.Permissions;
 using Rocket.Unturned.Player;
+using Rocket.Unturned.Commands;
 using Rocket.API;
 using SDG.Unturned;
+using System.Linq;
 
 namespace Zaup_Warning
 {
-    class CommandWarn : IRocketCommand
+    public class CommandWarn : IRocketCommand
     {
-        public bool RunFromConsole
-        {
-            get
-            {
-                return false;
-            }
-        }
         public string Name
         {
             get
@@ -42,24 +40,36 @@ namespace Zaup_Warning
         {
             get { return new List<string>(); }
         }
+        public AllowedCaller AllowedCaller
+        {
+            get { return false; }
+        }
 
-        public void Execute(RocketPlayer playerid, string[] msg)
+        public List<string> Permissions
+        {
+            get
+            {
+                return new List<string>() { "warnings.others" };
+            }
+        }
+
+        public void Execute(IRocketPlayer playerid, string[] msg)
         {
             if (playerid == null) return;
             if (msg.Length <= 0 || msg.Length > 3)
             {
-                RocketChat.Say(playerid, Zaup_Warning.Instance.Translate("warn_command_usage", new object[] { }));
+                UnturnedChat.Say(playerid, Zaup_Warning.Instance.Translate("warn_command_usage", new object[] { }));
                 return;
             }
-            RocketPlayer warnee = RocketPlayer.FromName(msg[0]);
+            IRocketPlayer warnee = IRocketPlayer.FromName(msg[0]);
             if (warnee == null)
             {
-                RocketChat.Say(playerid, Zaup_Warning.Instance.Translate("invalid_name_provided", new object[] { }));
+                UnturnedChat.Say(playerid, Zaup_Warning.Instance.Translate("invalid_name_provided", new object[] { }));
                 return;
             }
             if (warnee.CharacterName == playerid.CharacterName)
             {
-                RocketChat.Say(playerid, Zaup_Warning.Instance.Translate("not_warn_yourself", new object[] { }));
+                UnturnedChat.Say(playerid, Zaup_Warning.Instance.Translate("not_warn_yourself", new object[] { }));
                 return;
             }
             string reason = "";
@@ -79,12 +89,12 @@ namespace Zaup_Warning
                 if (currentlevel + amt < 0) amt = (short)currentlevel;
                 if (!Zaup_Warning.Instance.Database.EditWarning(warnee.CSteamID, amt))
                 {
-                    RocketChat.Say(playerid, Zaup_Warning.Instance.Translate("error_warning_player", new object[] { warnee.CharacterName }));
+                    UnturnedChat.Say(playerid, Zaup_Warning.Instance.Translate("error_warning_player", new object[] { warnee.CharacterName }));
                     return;
                 }
                 else
                 {
-                    RocketChat.Say(playerid, Zaup_Warning.Instance.Translate("warn_reduced_warner_msg", new object[] {
+                    UnturnedChat.Say(playerid, Zaup_Warning.Instance.Translate("warn_reduced_warner_msg", new object[] {
                         warnee.CharacterName,
                         amt.ToString(),
                         ((short)currentlevel + amt).ToString()
@@ -96,13 +106,13 @@ namespace Zaup_Warning
             {
                 if (!Zaup_Warning.Instance.Database.EditWarning(warnee.CSteamID, amt))
                 {
-                    RocketChat.Say(playerid, Zaup_Warning.Instance.Translate("error_warning_player", new object[] { warnee.CharacterName }));
+                    UnturnedChat.Say(playerid, Zaup_Warning.Instance.Translate("error_warning_player", new object[] { warnee.CharacterName }));
                     return;
                 }
                 else
                 {
                     warnee.Kick(reason);
-                    RocketChat.Say(Zaup_Warning.Instance.Translate("warn_kick_public_msg", new object[] {
+                    UnturnedChat.Say(Zaup_Warning.Instance.Translate("warn_kick_public_msg", new object[] {
                         warnee.CharacterName,
                         playerid.CharacterName,
                         reason,
@@ -115,12 +125,12 @@ namespace Zaup_Warning
             {
                 if (!Zaup_Warning.Instance.Database.EditWarning(warnee.CSteamID, amt))
                 {
-                    RocketChat.Say(playerid, Zaup_Warning.Instance.Translate("error_warning_player", new object[] { warnee.CharacterName }));
+                    UnturnedChat.Say(playerid, Zaup_Warning.Instance.Translate("error_warning_player", new object[] { warnee.CharacterName }));
                     return;
                 }
                 else
                 {
-                    RocketChat.Say(Zaup_Warning.Instance.Translate("warn_msg", new object[] {
+                    UnturnedChat.Say(Zaup_Warning.Instance.Translate("warn_msg", new object[] {
                         warnee.CharacterName,
                         playerid.CharacterName,
                         reason,

@@ -1,8 +1,16 @@
-﻿using System;
+﻿using Rocket.API;
+using Rocket.API.Collections;
+using Rocket.Core.Commands;
+using Rocket.Core.Logging;
+using Rocket.Core.Plugins;
+using Rocket.Unturned;
+using Rocket.Unturned.Events;
+using Rocket.Unturned.Permissions;
+using Rocket.Unturned.Player;
+using SDG.Unturned;
+using Steamworks;
+using System;
 using System.Collections.Generic;
-using Rocket.API;
-using Rocket.Unturned.Logging;
-using Rocket.Unturned.Plugins;
 
 namespace Zaup_Warning
 {
@@ -11,12 +19,13 @@ namespace Zaup_Warning
         public static Zaup_Warning Instance;
         public DatabaseMgr Database;
 
-        public override Dictionary<string, string> DefaultTranslations
+        public static Dictionary<CSteamID, string> Players = new Dictionary<CSteamID, string>();
+
+        public override TranslationList DefaultTranslations
         {
             get
             {
-                return new Dictionary<string, string>
-                {
+                return new TranslationList() {
                     {
                         "warn_command_usage",
                         "/warn <name> \"[reason]\" [amt] Amt can be negative to reduce warning level."
@@ -66,9 +75,17 @@ namespace Zaup_Warning
         }
 
         protected override void Load() {
-            Zaup_Warning.Instance = this;
+            Instance = this;
             this.Database = new DatabaseMgr();
             this.Database.DeleteWarnings();
+            UnturnedPermissions.OnJoinRequested += Events_OnJoinRequested;
+            U.Events.OnPlayerConnected += RocketServerEvents_OnPlayerConnected;
         }
+        protected override void Unload()
+        {
+            UnturnedPermissions.OnJoinRequested -= Events_OnJoinRequested;
+            U.Events.OnPlayerConnected -= RocketServerEvents_OnPlayerConnected;
+        }
+
     }
 }

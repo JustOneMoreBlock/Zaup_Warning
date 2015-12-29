@@ -6,7 +6,7 @@ namespace Zaup_Warning
 {
     public class Zaup_WarningConfiguration : IRocketPluginConfiguration
     {
-        public string DatabaseAddress; 
+        public string DatabaseAddress;
         public string DatabaseName;
         public string DatabaseUsername;
         public string DatabasePassword;
@@ -16,23 +16,17 @@ namespace Zaup_Warning
         public bool WarningtoKickOn;
         public byte WarningstoKick;
 
-         public IRocketPluginConfiguration DefaultConfiguration
+        public void LoadDefaults()
         {
-            get
-            {
-                return new Zaup_WarningConfiguration
-                {
-                    DatabaseAddress = "localhost",
-                    DatabaseName = "unturned",
-                    DatabaseUsername = "unturned",
-                    DatabasePassword = "password",
-                    DatabasePort = 3306,
-                    TableName = "warnings",
-                    KeepWarningsLengthDays = 30,
-                    WarningtoKickOn = true,
-                    WarningstoKick = 3
-                };
-            }
-         }
+            DatabaseAddress = "localhost";
+            DatabaseName = "unturned";
+            DatabaseUsername = "unturned";
+            DatabasePassword = "password";
+            DatabasePort = 3306;
+            TableName = "warnings";
+            KeepWarningsLengthDays = 30;
+            WarningtoKickOn = true;
+            WarningstoKick = 3;
+        }
     }
 }
