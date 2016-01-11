@@ -21,6 +21,19 @@ namespace Zaup_Warning
 
         public static Dictionary<CSteamID, string> Players = new Dictionary<CSteamID, string>();
 
+        protected override void Load()
+        {
+            Instance = this;
+            Database = new DatabaseMgr();
+            Database.DeleteWarnings();
+            Logger.Log("Zaup Warning has been Loaded!");
+        }
+
+        protected override void Unload()
+        {
+            Logger.Log("Zaup Warning has been Unloaded!");
+        }
+
         public override TranslationList DefaultTranslations
         {
             get
@@ -73,12 +86,5 @@ namespace Zaup_Warning
                 };
             }
         }
-
-        protected override void Load() {
-            Zaup_Warning.Instance = this;
-            this.Database = new DatabaseMgr();
-            this.Database.DeleteWarnings();
-        }
-
     }
 }

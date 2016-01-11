@@ -22,11 +22,11 @@ namespace Zaup_Warning
             {
                 MySqlConnection mySqlConnection = this.createConnection();
                 MySqlCommand mySqlCommand = mySqlConnection.CreateCommand();
-                mySqlCommand.CommandText = string.Concat("show tables like '", Zaup_Warning.Instance.Configuration.TableName, "'");
+                mySqlCommand.CommandText = string.Concat("show tables like '", Zaup_Warning.Instance.Configuration.Instance.TableName, "'");
                 mySqlConnection.Open();
                 if (mySqlCommand.ExecuteScalar() == null)
                 {
-                    mySqlCommand.CommandText = string.Concat("CREATE TABLE `", Zaup_Warning.Instance.Configuration.TableName, "` (`steamId` varchar(32) NOT NULL,`warninglevel` tinyint unsigned NOT NULL,`lastwarningdate` TIMESTAMP NOT NULL DEFAULT current_timestamp, PRIMARY KEY (`steamId`)) ");
+                    mySqlCommand.CommandText = string.Concat("CREATE TABLE `", Zaup_Warning.Instance.Configuration.Instance.TableName, "` (`steamId` varchar(32) NOT NULL,`warninglevel` tinyint unsigned NOT NULL,`lastwarningdate` TIMESTAMP NOT NULL DEFAULT current_timestamp, PRIMARY KEY (`steamId`)) ");
                     mySqlCommand.ExecuteNonQuery();
                 }
                 mySqlConnection.Close();
@@ -42,16 +42,16 @@ namespace Zaup_Warning
             MySqlConnection mySqlConnection = null;
             try
             {
-                if (Zaup_Warning.Instance.Configuration.DatabasePort == 0)
+                if (Zaup_Warning.Instance.Configuration.Instance.DatabasePort == 0)
                 {
-                    Zaup_Warning.Instance.Configuration.DatabasePort = 3306;
+                    Zaup_Warning.Instance.Configuration.Instance.DatabasePort = 3306;
                 }
-                mySqlConnection = new MySqlConnection(string.Format("SERVER={0};DATABASE={1};UID={2};PASSWORD={3};PORT={4};", new object[] { 
-                    Zaup_Warning.Instance.Configuration.DatabaseAddress, 
-                    Zaup_Warning.Instance.Configuration.DatabaseName, 
-                    Zaup_Warning.Instance.Configuration.DatabaseUsername, 
-                    Zaup_Warning.Instance.Configuration.DatabasePassword,
-                    Zaup_Warning.Instance.Configuration.DatabasePort}));
+                mySqlConnection = new MySqlConnection(string.Format("SERVER={0};DATABASE={1};UID={2};PASSWORD={3};PORT={4};", new object[] {
+                    Zaup_Warning.Instance.Configuration.Instance.DatabaseAddress,
+                    Zaup_Warning.Instance.Configuration.Instance.DatabaseName,
+                    Zaup_Warning.Instance.Configuration.Instance.DatabaseUsername,
+                    Zaup_Warning.Instance.Configuration.Instance.DatabasePassword,
+                    Zaup_Warning.Instance.Configuration.Instance.DatabasePort}));
             }
             catch (Exception exception)
             {
@@ -67,12 +67,12 @@ namespace Zaup_Warning
             {
                 MySqlConnection mySqlConnection = this.createConnection();
                 MySqlCommand mySqlCommand = mySqlConnection.CreateCommand();
-                mySqlCommand.CommandText = string.Concat(new string[] { 
+                mySqlCommand.CommandText = string.Concat(new string[] {
                     "select `warninglevel` from `",
-                    Zaup_Warning.Instance.Configuration.TableName,
+                    Zaup_Warning.Instance.Configuration.Instance.TableName,
                     "` where `steamId` = '",
                     id.ToString(),
-                    "';" 
+                    "';"
                 });
                 mySqlConnection.Open();
                 object obj = mySqlCommand.ExecuteScalar();
@@ -96,12 +96,12 @@ namespace Zaup_Warning
             {
                 MySqlConnection mySqlConnection = this.createConnection();
                 MySqlCommand mySqlCommand = mySqlConnection.CreateCommand();
-                mySqlCommand.CommandText = string.Concat(new string[] { 
+                mySqlCommand.CommandText = string.Concat(new string[] {
                     "select timestampdiff(day, now(), 'select `lastwarningdate` from `",
-                    Zaup_Warning.Instance.Configuration.TableName,
+                    Zaup_Warning.Instance.Configuration.Instance.TableName,
                     "` where `steamId` = '",
                     id.ToString(),
-                    "' ');" 
+                    "' ');"
                 });
                 mySqlConnection.Open();
                 object obj = mySqlCommand.ExecuteScalar();
@@ -125,10 +125,10 @@ namespace Zaup_Warning
             {
                 MySqlConnection mySqlConnection = this.createConnection();
                 MySqlCommand mySqlCommand = mySqlConnection.CreateCommand();
-                mySqlCommand.CommandText = string.Concat(new string[] { 
+                mySqlCommand.CommandText = string.Concat(new string[] {
                     "insert into `" +
-                Zaup_Warning.Instance.Configuration.TableName +
-                "` (steamId, warninglevel) VALUES ('" + id.ToString() + "', 1) on duplicate key update `warninglevel`=`warninglevel`+ " + 
+                Zaup_Warning.Instance.Configuration.Instance.TableName +
+                "` (steamId, warninglevel) VALUES ('" + id.ToString() + "', 1) on duplicate key update `warninglevel`=`warninglevel`+ " +
                 amt.ToString()
                 });
                 mySqlConnection.Open();
@@ -150,11 +150,11 @@ namespace Zaup_Warning
             {
                 MySqlConnection mySqlConnection = this.createConnection();
                 MySqlCommand mySqlCommand = mySqlConnection.CreateCommand();
-                mySqlCommand.CommandText = string.Concat(new string[] { 
-                    "delete from `", 
-                    Zaup_Warning.Instance.Configuration.TableName,
+                mySqlCommand.CommandText = string.Concat(new string[] {
+                    "delete from `",
+                    Zaup_Warning.Instance.Configuration.Instance.TableName,
                     "` where `lastwarningdate` < date_sub(now(), interval ",
-                    Zaup_Warning.Instance.Configuration.KeepWarningsLengthDays.ToString(),
+                    Zaup_Warning.Instance.Configuration.Instance.KeepWarningsLengthDays.ToString(),
                     " day)"
                 });
                 mySqlConnection.Open();

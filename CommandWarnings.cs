@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Rocket.Core;
 using Rocket.Core.Permissions;
 using Rocket.Unturned;
+using Rocket.Unturned.Chat;
 using Rocket.Unturned.Events;
 using Rocket.Unturned.Permissions;
 using Rocket.Unturned.Player;
@@ -61,9 +62,12 @@ namespace Zaup_Warning
                 UnturnedChat.Say(playerid, Zaup_Warning.Instance.Translate("warnings_command_usage", new object[] { }));
                 return;
             }
+
+            UnturnedPlayer caller = UnturnedPlayer.FromName(playerid.ToString());
+
             if (msg.Length == 0)
             {
-                byte currentlevel = Zaup_Warning.Instance.Database.GetWarnings(playerid.CSteamID);
+                byte currentlevel = Zaup_Warning.Instance.Database.GetWarnings(caller.CSteamID);
                 UnturnedChat.Say(playerid, Zaup_Warning.Instance.Translate("warnings_current_level", new object[] { currentlevel }));
                 return;
             }
@@ -72,7 +76,7 @@ namespace Zaup_Warning
                 UnturnedChat.Say(playerid, Zaup_Warning.Instance.Translate("warnings_no_permission_others", new object[] { }));
                 return;
             }
-            IRocketPlayer warnee = IRocketPlayer.FromName(msg[0]);
+            UnturnedPlayer warnee = UnturnedPlayer.FromName(msg[0]);
             if (warnee == null)
             {
                 UnturnedChat.Say(playerid, Zaup_Warning.Instance.Translate("invalid_name_provided", new object[] { }));

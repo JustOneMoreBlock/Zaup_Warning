@@ -1,15 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+
+using Rocket.API;
 using Rocket.Core;
 using Rocket.Core.Permissions;
 using Rocket.Unturned;
+using Rocket.Unturned.Chat;
+using Rocket.Unturned.Commands;
 using Rocket.Unturned.Events;
 using Rocket.Unturned.Permissions;
 using Rocket.Unturned.Player;
-using Rocket.Unturned.Commands;
-using Rocket.API;
+
+using UnityEngine;
+using SDG;
 using SDG.Unturned;
-using System.Linq;
+using Steamworks;
 
 namespace Zaup_Warning
 {
@@ -61,13 +67,13 @@ namespace Zaup_Warning
                 UnturnedChat.Say(playerid, Zaup_Warning.Instance.Translate("warn_command_usage", new object[] { }));
                 return;
             }
-            IRocketPlayer warnee = IRocketPlayer.FromName(msg[0]);
+            UnturnedPlayer warnee = UnturnedPlayer.FromName(msg[0]);
             if (warnee == null)
             {
                 UnturnedChat.Say(playerid, Zaup_Warning.Instance.Translate("invalid_name_provided", new object[] { }));
                 return;
             }
-            if (warnee.CharacterName == playerid.CharacterName)
+            if (warnee.CharacterName == playerid.ToString())
             {
                 UnturnedChat.Say(playerid, Zaup_Warning.Instance.Translate("not_warn_yourself", new object[] { }));
                 return;
@@ -102,7 +108,7 @@ namespace Zaup_Warning
                     return;
                 }
             }
-            if (((short)currentlevel + amt) >= Zaup_Warning.Instance.Configuration.WarningstoKick && Zaup_Warning.Instance.Configuration.WarningtoKickOn)
+            if (((short)currentlevel + amt) >= Zaup_Warning.Instance.Configuration.Instance.WarningstoKick && Zaup_Warning.Instance.Configuration.Instance.WarningtoKickOn)
             {
                 if (!Zaup_Warning.Instance.Database.EditWarning(warnee.CSteamID, amt))
                 {
@@ -114,7 +120,7 @@ namespace Zaup_Warning
                     warnee.Kick(reason);
                     UnturnedChat.Say(Zaup_Warning.Instance.Translate("warn_kick_public_msg", new object[] {
                         warnee.CharacterName,
-                        playerid.CharacterName,
+                        playerid.ToString(),
                         reason,
                         ((short)currentlevel + amt).ToString()
                     }));
@@ -132,7 +138,7 @@ namespace Zaup_Warning
                 {
                     UnturnedChat.Say(Zaup_Warning.Instance.Translate("warn_msg", new object[] {
                         warnee.CharacterName,
-                        playerid.CharacterName,
+                        playerid.ToString(),
                         reason,
                         ((short)currentlevel + amt).ToString()
                     }));
