@@ -75,16 +75,9 @@ namespace Zaup_Warning
         }
 
         protected override void Load() {
-            Instance = this;
+            Zaup_Warning.Instance = this;
             this.Database = new DatabaseMgr();
             this.Database.DeleteWarnings();
-            UnturnedPermissions.OnJoinRequested += Events_OnJoinRequested;
-            U.Events.OnPlayerConnected += RocketServerEvents_OnPlayerConnected;
-        }
-        protected override void Unload()
-        {
-            UnturnedPermissions.OnJoinRequested -= Events_OnJoinRequested;
-            U.Events.OnPlayerConnected -= RocketServerEvents_OnPlayerConnected;
         }
 
     }

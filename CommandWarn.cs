@@ -15,6 +15,11 @@ namespace Zaup_Warning
 {
     public class CommandWarn : IRocketCommand
     {
+        public AllowedCaller AllowedCaller
+        {
+            get { return AllowedCaller.Both; }
+        }
+
         public string Name
         {
             get
@@ -40,11 +45,6 @@ namespace Zaup_Warning
         {
             get { return new List<string>(); }
         }
-        public AllowedCaller AllowedCaller
-        {
-            get { return false; }
-        }
-
         public List<string> Permissions
         {
             get
