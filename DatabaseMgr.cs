@@ -33,7 +33,7 @@ namespace Zaup_Warning
             }
             catch (Exception exception)
             {
-                Logger.LogException(exception);
+                Rocket.Core.Logging.Logger.LogException(exception);
             }
         }
 
@@ -55,7 +55,7 @@ namespace Zaup_Warning
             }
             catch (Exception exception)
             {
-                Logger.LogException(exception);
+                Rocket.Core.Logging.Logger.LogException(exception);
             }
             return mySqlConnection;
         }
@@ -84,7 +84,7 @@ namespace Zaup_Warning
             }
             catch (Exception exception)
             {
-                Logger.LogException(exception);
+                Rocket.Core.Logging.Logger.LogException(exception);
             }
             return num;
         }
@@ -113,7 +113,7 @@ namespace Zaup_Warning
             }
             catch (Exception exception)
             {
-                Logger.LogException(exception);
+                Rocket.Core.Logging.Logger.LogException(exception);
             }
             return num;
         }
@@ -138,7 +138,7 @@ namespace Zaup_Warning
             }
             catch (Exception exception)
             {
-                Logger.LogException(exception);
+                Rocket.Core.Logging.Logger.LogException(exception);
             }
             return success;
         }
@@ -164,7 +164,7 @@ namespace Zaup_Warning
             }
             catch (Exception exception)
             {
-                Logger.LogException(exception);
+                Rocket.Core.Logging.Logger.LogException(exception);
             }
             return success;
         }

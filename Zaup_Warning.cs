@@ -26,12 +26,12 @@ namespace Zaup_Warning
             Instance = this;
             Database = new DatabaseMgr();
             Database.DeleteWarnings();
-            Logger.Log("Zaup Warning has been Loaded!");
+            Rocket.Core.Logging.Logger.Log("Zaup Warning has been Loaded!");
         }
 
         protected override void Unload()
         {
-            Logger.Log("Zaup Warning has been Unloaded!");
+            Rocket.Core.Logging.Logger.Log("Zaup Warning has been Unloaded!");
         }
 
         public override TranslationList DefaultTranslations
